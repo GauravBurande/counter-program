@@ -36,6 +36,10 @@ fn process_instruction(
 
     match CounterInstruction::try_from_slice(instruction_data)? {
         CounterInstruction::Initialize => {
+            if counter.count == 0 {
+                msg!("The counter is already initialized!");
+                return Err(ProgramError::InvalidInstructionData);
+            }
             msg!("Initializing counter with 0");
             counter.count = 0;
         }
