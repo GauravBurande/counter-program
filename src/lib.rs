@@ -36,7 +36,7 @@ fn process_instruction(
 
     match CounterInstruction::try_from_slice(instruction_data)? {
         CounterInstruction::Initialize => {
-            if counter.count == 0 {
+            if counter.count != 0 {
                 msg!("The counter is already initialized!");
                 return Err(ProgramError::InvalidInstructionData);
             }
@@ -45,7 +45,7 @@ fn process_instruction(
         }
         CounterInstruction::Increment(amount) => {
             msg!("Incrementing counter by 1");
-            let _ = counter.count.saturating_add(amount);
+            counter.count = counter.count.saturating_add(amount);
             msg!("Incremented by {}, new count: {}", amount, counter.count);
         }
         CounterInstruction::Decrement(amount) => {
