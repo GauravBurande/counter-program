@@ -15,7 +15,6 @@ struct Counter {
 
 #[derive(BorshDeserialize, BorshSerialize)]
 enum CounterInstruction {
-    Initialize,
     Increment(u32),
     Decrement(u32)
 }
@@ -35,14 +34,6 @@ fn process_instruction(
     let mut counter = Counter::try_from_slice(&account.data.borrow())?;
 
     match CounterInstruction::try_from_slice(instruction_data)? {
-        CounterInstruction::Initialize => {
-            if counter.count != 0 {
-                msg!("The counter is already initialized!");
-                return Err(ProgramError::InvalidInstructionData);
-            }
-            msg!("Initializing counter with 0");
-            counter.count = 0;
-        }
         CounterInstruction::Increment(amount) => {
             msg!("Incrementing counter by 1");
             counter.count = counter.count.saturating_add(amount);
