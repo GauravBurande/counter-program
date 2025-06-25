@@ -15,5 +15,3 @@ export const COUNTER_SIZE = borsh.serialize(
   schema,
   new CounterAccount({ count: 0 })
 ).length;
-
-console.log(borsh.serialize(schema, new CounterAccount({ count: 1 })));
